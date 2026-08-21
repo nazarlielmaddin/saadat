@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/* ── Saadat design tokens ───────────────────────────────────────────────
+   Dark, calm, premium. Muted gold accents; no neon. */
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-serif: var(--font-lora), ui-serif, Georgia, serif;
+  --font-arabic: var(--font-amiri), "Scheherazade New", serif;
+
+  --color-ink: #08080b;
+  --color-ink-2: #0e0e13;
+  --color-surface: #15151c;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-soft: rgba(255, 255, 255, 0.05);
+  --color-mist: #f3f1ea;
+  --color-mist-dim: #a9a79e;
+  --color-mist-faint: #8a8882;
+  --color-gold: #c8a97c;
+  --color-gold-soft: #e2cda6;
+  --color-gold-deep: #9a7c52;
+
+  --shadow-soft: 0 24px 80px -24px rgba(0, 0, 0, 0.75);
+  --shadow-card: 0 12px 40px -16px rgba(0, 0, 0, 0.6);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-mist);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Mobile & touch polish ─────────────────────────────────────────────── */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+[role="switch"] {
+  touch-action: manipulation;
+}
+
+/* Bigger slider thumbs on touch devices (phones/tablets) */
+@media (pointer: coarse) {
+  input[type="range"].slider {
+    height: 6px;
+  }
+  input[type="range"].slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  input[type="range"].slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ── Selection & focus ─────────────────────────────────────────────────── */
+::selection {
+  background: rgba(200, 169, 124, 0.28);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(200, 169, 124, 0.7);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  border: 3px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Glass surfaces ────────────────────────────────────────────────────── */
+.glass {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.03)
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background: linear-gradient(
+    160deg,
+    rgba(22, 22, 28, 0.92),
+    rgba(12, 12, 16, 0.94)
+  );
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* ── Cinematic text treatment ──────────────────────────────────────────── */
+.text-glow-soft {
+  text-shadow: 0 0 60px rgba(200, 169, 124, 0.25);
+}
+
+/* ── Range sliders (volume + progress) ─────────────────────────────────── */
+input[type="range"].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  outline-offset: 6px;
+}
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #f3f1ea;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease;
+}
+input[type="range"].slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+input[type="range"].slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #f3f1ea;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Background video fade-in ──────────────────────────────────────────── */
+@keyframes video-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.video-fade-in {
+  animation: video-in 1.6s ease both;
+}
+
+/* ── Equalizer (subtle, calm) ──────────────────────────────────────────── */
+@keyframes eq-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq-bounce 1.1s ease-in-out infinite;
+}
+
+/* ── Slow drift for background art ─────────────────────────────────────── */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.03);
+  }
+}
+.animate-drift {
+  animation: drift 18s ease-in-out infinite;
+}
+
+/* ── Ambient thumbnail shimmer ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-shimmer {
+  background-size: 220% 220%;
+  animation: shimmer 9s ease-in-out infinite;
+}
+
+/* ── Verse highlight ───────────────────────────────────────────────────── */
+@keyframes verse-glow {
+  0% {
+    background-color: rgba(200, 169, 124, 0);
+  }
+  30% {
+    background-color: rgba(200, 169, 124, 0.14);
+  }
+  100% {
+    background-color: rgba(200, 169, 124, 0.09);
+  }
+}
+.verse-active {
+  animation: verse-glow 1.6s ease-out forwards;
+  border-color: rgba(200, 169, 124, 0.45) !important;
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

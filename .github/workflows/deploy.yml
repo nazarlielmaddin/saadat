@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          EXPORT: "1"
+          NEXT_PUBLIC_BASE_PATH: "/saadat"
+      
+      - name: Deploy to gh-pages branch
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          git checkout --orphan gh-pages
+          git rm -rf . --cached --quiet 2>/dev/null || true
+          
+          # Copy only static export to git working directory
+          cp -r out/* .
+          
+          # Skip Jekyll processing — otherwise GitHub Pages ignores _next/ (underscore dirs)
+          touch .nojekyll
+          
+          # Add all files to staging
+          git add .
+          
+          # Create commit
+          git commit -m "Deploy: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" --allow-empty
+          
+          # Force push to gh-pages
+          git push -f origin gh-pages
